@@ -47,6 +47,12 @@ print(data.shape)
 print("\nStatistiques descriptives :")
 print(data.describe())
 
+# # Visualisation des relations entre les variables
+# plt.figure(figsize=(10, 6))
+# sns.pairplot(data, hue='id_chapitre')
+# plt.title('Diagramme de dispersion des variables')
+# plt.show()
+
 # Sélection des variables numériques pour le calcul de la corrélation
 data_numeric = data.select_dtypes(include=['float64', 'int64'])
 
@@ -104,10 +110,6 @@ indices = data[(data['chapitreProgression'] < 50.00) & (data['note'] > 15.0) ].i
 # suppression des lignes avec les indices sélectionnés
 data.drop(indices, inplace=True)
 
-# selection des indices à supprimer
-indices = data[(data['scrollMinute'] < 5.0) & (data['chapitreProgression'] < 0.1) ].index
-# suppression des lignes avec les indices sélectionnés
-data.drop(indices, inplace=True)
 
 
 # Statistiques descriptives apres suppression
@@ -140,11 +142,13 @@ plt.show()
 
 
 plt.figure(figsize=(10, 6))
-sns.boxplot(x='id_chapitre', y='DureeTotal', data=data)
-plt.title('Distribution de la durée totale par chapitre ')
+sns.boxplot(x='id_chapitre', y='note', data=data)
+plt.title('Distribution de la notepar chapitre ')
 plt.xlabel('Chapitre')
-plt.ylabel('DureeTotal')
+plt.ylabel('note')
 plt.show()
+
+
 
 
 
@@ -154,7 +158,7 @@ plt.show()
 scaler = StandardScaler()
 
 # Sélection des caractéristiques à normaliser
-features_to_normalize = ['chapitreProgression', 'scrollMinute', 'clicksMinute','note','DureeTotal']
+features_to_normalize = ['chapitreProgression', 'clicksMinute','note','DureeTotal']
 
 # Standardisation des caractéristiques sélectionnées
 data[features_to_normalize] = scaler.fit_transform(data[features_to_normalize])
